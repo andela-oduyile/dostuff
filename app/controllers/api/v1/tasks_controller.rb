@@ -1,6 +1,8 @@
 module Api
   module V1
     class TasksController < ApplicationController
+      skip_before_action :authenticate
+      
       def index
         tasks = Task.order('created_at DESC')
         render json: { success: true, data: tasks}, status: :ok
