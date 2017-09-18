@@ -1,8 +1,7 @@
 module Api
   module V1
     class TasksController < ApplicationController
-      skip_before_action :authenticate
-      
+
       def index
         tasks = Task.order('created_at DESC')
         render json: { success: true, data: tasks}, status: :ok
@@ -14,7 +13,7 @@ module Api
       end
 
       def create
-        task = Task.new(task_params)
+        task = current_user.tasks.new(task_params)
 
         if task.save
           render json: { success: true, data: task}, status: :ok
@@ -43,8 +42,6 @@ module Api
           params.permit(:content, :state)
         end
 
-        def set_task
-        end
     end
   end
 end

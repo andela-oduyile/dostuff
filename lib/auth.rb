@@ -4,21 +4,15 @@ class Auth
   ALGORITHM = 'HS256'
 
   def self.issue(payload)
-    JWT.encode(
-      payload,
-      auth_secret,
-      ALGORITHM)
+    jwt = JWT.encode(payload, Rails.application.secrets.secret_key_base, ALGORITHM)
+    jwt
   end
 
   def self.decode(token)
     JWT.decode(token,
-      auth_secret,
+      Rails.application.secrets.secret_key_base,
       true,
       { algorithm: ALGORITHM }).first
-  end
-
-  def self.auth_secret
-    ENV["AUTH_SECRET"]
   end
 
 end
